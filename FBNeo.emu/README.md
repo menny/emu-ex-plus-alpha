@@ -82,36 +82,92 @@ FBNeo.emu is a comprehensive arcade and console emulator based on the FinalBurn 
 
 ### Prerequisites
 
-- **C++ Compiler**: GCC 16+, Clang 21+, or MSVC with C++20 support
-- **Build Tools**: CMake 4.1+, GNU Make, pkg-config
+#### All Platforms
+- **CMake**: Version 4.1 or later (required)
+- **Ninja**: Build system (required for CMake builds)
+- **pkg-config**: Dependency management
 - **Imagine SDK**: Cross-platform application framework
+- **EmuFramework**: Common emulator frontend
+
+#### Android-Specific
+- **Android NDK**: r29 or later (includes Clang compiler)
+- **Android SDK**: API level 21+ (Android 5.0+)
+- **JDK**: Version 21 or later
+- **Build Tools**: autoconf, automake, autopoint, libtool, nasm, wget
+
+#### Linux-Specific
+- **C++ Compiler**: GCC 16+, Clang 21+, or MSVC with C++20 support
+- **Development Libraries**: X11, OpenGL, ALSA development headers
 
 ### Environment Setup
 
 ```bash
-export IMAGINE_PATH=/path/to/imagine
+# Required paths
+export IMAGINE_PATH=/path/to/emu-ex-plus-alpha/imagine
 export IMAGINE_SDK_PATH=$HOME/imagine-sdk
+export EMUFRAMEWORK_PATH=/path/to/emu-ex-plus-alpha/EmuFramework
+
+# Android-specific (if building for Android)
+export ANDROID_HOME=/path/to/android-sdk
+export ANDROID_NDK=/path/to/android-ndk
 ```
 
 ### Platform-Specific Builds
 
+#### Android (Full Build Process)
+
+**Step 1: Build All Dependencies**
+
+Build the Imagine SDK and all required dependencies (libcxx, libogg, libvorbis, flac, xz, libarchive) for all Android architectures:
+
+```bash
+cd $IMAGINE_PATH/bundle/all
+bash makeAll-android.sh install
+```
+
+This builds for: armv7, arm64, x86, x86_64
+
+**Step 2: Configure Imagine Framework**
+
+```bash
+cd $IMAGINE_PATH
+./android.sh config
+./android.sh installLinks --config Release
+```
+
+**Step 3: Configure EmuFramework**
+
+```bash
+cd $EMUFRAMEWORK_PATH
+./android.sh config
+./android.sh installLinks --config Release
+```
+
+**Step 4: Build FBNeo.emu APK**
+
+```bash
+cd FBNeo.emu
+make -f android.mk android-apk CONFIG=Release
+```
+
+The APK will be generated in the build output directory.
+
 #### Linux
+
+**Step 1: Build Imagine SDK**
 
 ```bash
 cd $IMAGINE_PATH
 cmake --preset linux-x86_64
 cmake --build build/linux-x86_64 --target install
+```
 
+**Step 2: Build FBNeo.emu**
+
+```bash
 cd FBNeo.emu
 cmake --preset linux-x86_64
 cmake --build build/linux-x86_64
-```
-
-#### Android
-
-```bash
-cd $IMAGINE_PATH/bundle/all
-bash makeAll-android.sh install
 ```
 
 #### iOS
@@ -119,6 +175,9 @@ bash makeAll-android.sh install
 ```bash
 cd $IMAGINE_PATH/bundle/all
 bash makeAll-ios.sh install
+
+cd ../../FBNeo.emu
+make -f ios.mk
 ```
 
 ### Build Configuration
@@ -130,6 +189,14 @@ bash makeAll-ios.sh install
 Key compiler definitions:
 - `LSB_FIRST` - Little-endian byte order (x86, ARM)
 - `FBNEO_COMPAT` - Enable compatibility features
+
+### Troubleshooting
+
+**CMake version error**: Ensure you have CMake 4.1+. The project requires features not available in CMake 3.x.
+
+**Missing dependencies on Android**: Run `makeAll-android.sh install` to build all required dependencies before building the emulator.
+
+**Ninja not found**: Install ninja-build: `sudo apt-get install ninja-build` (Debian/Ubuntu)
 
 ## BIOS Requirements
 
