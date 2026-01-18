@@ -1,0 +1,20 @@
+FBNeo Vendored Source Information
+==================================
+Commit: e6d13dfa0259bb270b6e86545a6e1d09de928d15
+Source: https://github.com/finalburnneo/FBNeo
+Date: 2026-01-18 03:30:38 UTC
+Scope: CPS1/CPS2/CPS3 only (Capcom arcade systems)
+
+Components Vendored:
+- Capcom drivers (CPS1/CPS2/CPS3) from src/burn/drv/capcom/
+- M68000 CPU core from src/cpu/m68k/
+- Z80 CPU core from src/cpu/z80/
+- YM2151 sound chip from src/burn/snd/
+- MSM6295 ADPCM from src/burn/snd/
+- Burn core framework from src/burn/
+- Required devices (EEPROM, Timer) from src/burn/devices/
+- Dependencies (libs7zip if present) from src/dep/
+
+Note: This is a minimal vendor containing only CPS support.
+To add other arcade systems, re-run this script and vendor
+additional drivers from src/burn/drv/.
