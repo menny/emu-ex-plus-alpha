@@ -82,19 +82,19 @@ FILE_COUNT=$(find FBNeo.emu/src/fbneo/burn -maxdepth 1 -type f | wc -l)
 echo "✓ Copied burn core files ($FILE_COUNT files)"
 echo ""
 
-# 5. Copy sound chips (YM2151, MSM6295)
+# 5. Copy sound chips (YM2151, MSM6295, Samples)
 echo "[5/11] Copying sound chips..."
 cd "$TEMP_DIR/FBNeo/src/burn/snd"
-cp burn_ym2151.* msm6295.* ym2151.* \
+cp burn_ym2151.* msm6295.* ym2151.* samples.* \
    "$REPO_ROOT/FBNeo.emu/src/fbneo/burn/snd/" 2>/dev/null || true
 FILE_COUNT=$(find "$REPO_ROOT/FBNeo.emu/src/fbneo/burn/snd" -type f 2>/dev/null | wc -l)
 echo "✓ Copied sound chip files ($FILE_COUNT files)"
 echo ""
 
-# 6. Copy devices (EEPROM, Timer, etc.)
+# 6. Copy devices (EEPROM, Timekpr)
 echo "[6/11] Copying devices..."
 cd "$TEMP_DIR/FBNeo/src/burn/devices"
-cp eeprom.* timekpr.* timer.* samples.* \
+cp eeprom.* timekpr.* \
    "$REPO_ROOT/FBNeo.emu/src/fbneo/burn/devices/" 2>/dev/null || true
 FILE_COUNT=$(find "$REPO_ROOT/FBNeo.emu/src/fbneo/burn/devices" -type f 2>/dev/null | wc -l)
 echo "✓ Copied device files ($FILE_COUNT files)"
@@ -104,10 +104,14 @@ echo ""
 echo "[7/11] Copying CPU cores..."
 cp -r "$TEMP_DIR/FBNeo/src/cpu/m68k" "$REPO_ROOT/FBNeo.emu/src/fbneo/cpu/"
 cp -r "$TEMP_DIR/FBNeo/src/cpu/z80" "$REPO_ROOT/FBNeo.emu/src/fbneo/cpu/"
+# Copy CPU interface files (FBNeo wrappers for CPU cores)
+cp "$TEMP_DIR/FBNeo/src/cpu"/*_intf.* "$REPO_ROOT/FBNeo.emu/src/fbneo/cpu/" 2>/dev/null || true
 M68K_COUNT=$(find "$REPO_ROOT/FBNeo.emu/src/fbneo/cpu/m68k" -type f | wc -l)
 Z80_COUNT=$(find "$REPO_ROOT/FBNeo.emu/src/fbneo/cpu/z80" -type f | wc -l)
+INTF_COUNT=$(find "$REPO_ROOT/FBNeo.emu/src/fbneo/cpu" -maxdepth 1 -name "*_intf.*" -type f | wc -l)
 echo "✓ Copied M68K core ($M68K_COUNT files)"
 echo "✓ Copied Z80 core ($Z80_COUNT files)"
+echo "✓ Copied CPU interface files ($INTF_COUNT files)"
 echo ""
 
 # 8. Copy dependencies (if needed)

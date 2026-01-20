@@ -2,7 +2,7 @@ FBNeo Vendored Source Information
 ==================================
 Commit: e6d13dfa0259bb270b6e86545a6e1d09de928d15
 Source: https://github.com/finalburnneo/FBNeo
-Date: 2026-01-18 03:30:38 UTC
+Date: 2026-01-19 16:03:34 UTC
 Scope: CPS1/CPS2/CPS3 only (Capcom arcade systems)
 
 Components Vendored:

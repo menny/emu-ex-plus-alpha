@@ -1,6 +1,10 @@
 target_include_directories(fbneoemu PRIVATE
 	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo"
 	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/burn"
+	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/burn/snd"
+	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/burn/devices"
+	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/burn/drv/capcom"
+	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/cpu"
 	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/cpu/m68k"
 	"${CMAKE_CURRENT_SOURCE_DIR}/fbneo/cpu/z80"
 )
@@ -66,8 +70,11 @@ target_sources(fbneoemu PRIVATE
 # Sound chips
 target_sources(fbneoemu PRIVATE
 	fbneo/burn/snd/burn_ym2151.cpp
+	fbneo/burn/snd/burn_ym2203.cpp
 	fbneo/burn/snd/ym2151.c
 	fbneo/burn/snd/msm6295.cpp
+	fbneo/burn/snd/msm5205.cpp
+	fbneo/burn/snd/samples.cpp
 )
 
 # Devices
@@ -79,7 +86,14 @@ target_sources(fbneoemu PRIVATE
 # CPU cores
 target_sources(fbneoemu PRIVATE
 	fbneo/cpu/m68k/m68kcpu.c
+	fbneo/cpu/m68k/m68kops.c
 	fbneo/cpu/m68k/m68kdasm.c
 	fbneo/cpu/z80/z80.cpp
 	fbneo/cpu/z80/z80daisy.cpp
+)
+
+# CPU interfaces (FBNeo wrappers)
+target_sources(fbneoemu PRIVATE
+	fbneo/cpu/m68000_intf.cpp
+	fbneo/cpu/z80_intf.cpp
 )
